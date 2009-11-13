@@ -5,4 +5,5 @@
 [ ] LRU ?
 
 [ ] fallback on regular json ?
+[ ] readme : get_many example
 
