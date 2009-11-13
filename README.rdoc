@@ -1,0 +1,39 @@
+
+= rufus-cloche
+
+A very stupid local json store.
+
+Fast, thanks to yajl-ruby.
+
+
+== mailing list
+
+On the rufus-ruby list :
+
+http://groups.google.com/group/rufus-ruby
+
+
+== issue tracker
+
+http://github.com/jmettraux/rufus-cloche/issues
+
+
+== irc
+
+  irc.freenode.net #ruote
+
+
+== the rest of Rufus
+
+http://rufus.rubyforge.org
+
+
+== authors
+
+* John Mettraux, jmettraux@gmail.com, http://jmettraux.wordpress.com
+
+
+== license
+
+MIT
+

@@ -1,0 +1,7 @@
+
+[ ] use 1! lock for put
+
+[ ] LRU ?
+
+[ ] !! test for type change
+
