@@ -66,13 +66,7 @@ module Rufus
 
     def get (type, key)
 
-      fn = File.join(*path_for(type, key))
-
-      return nil unless File.exist?(fn)
-
-      s = lock(fn) { |f| f.read rescue nil }
-
-      s ? Yajl::Parser.parse(s) : nil
+      lock(type, key) { |f| do_get(f) }
     end
 
     def delete (doc)
@@ -101,6 +95,11 @@ module Rufus
 
     protected
 
+    def do_get (file)
+
+      Yajl::Parser.parse(file.read) rescue nil
+    end
+
     def dir_for (type)
 
       File.join(@dir, self.class.neutralize(type || 'no_type'))
@@ -121,12 +120,14 @@ module Rufus
         File.join(*path_for(type_or_doc['type'], type_or_doc['_id']))
       end
 
-      File.new(fn)
+      File.exist?(fn) ? File.new(fn) : nil
     end
 
     def lock (*args, &block)
 
       file = file_for(*args)
+
+      return nil unless file
 
       begin
         file.flock(File::LOCK_EX)

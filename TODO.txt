@@ -1,7 +1,6 @@
 
-[ ] use 1! lock for put
+[x] !! test for type change. Not covered. Have to delete + put.
+[x] use 1! lock for put. It's OK for now
 
 [ ] LRU ?
-
-[ ] !! test for type change
 
