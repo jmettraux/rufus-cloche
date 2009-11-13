@@ -28,18 +28,34 @@ require 'fileutils'
 
 module Rufus
 
+  #
+  # A cloche is a local JSON store.
+  #
   class Cloche
 
     attr_reader :dir
 
+    # Currently, the only known option is :dir
+    #
     def initialize (opts={})
 
       @dir = File.expand_path(opts[:dir] || 'cloche')
     end
 
+    # Puts a document (Hash) under the cloche.
+    #
+    # If the document is brand new, it will be given a revision number '_rev'
+    # of 0.
+    #
+    # If the document already exists in the cloche and the version to put
+    # has an older (different) revision number than the one currently stored,
+    # put will fail and return the current version of the doc.
+    #
+    # If the put is successful, nil is returned.
+    #
     def put (doc)
 
-      doc['_rev'] ||= "0"
+      doc['_rev'] ||= 0
 
       type, key = doc['type'], doc['_id']
 
@@ -47,7 +63,7 @@ module Rufus
 
       return cur if cur && cur['_rev'] != doc['_rev']
 
-      doc['_rev'] = (doc['_rev'].to_i + 1).to_s
+      doc['_rev'] = doc['_rev'] + 1
 
       d, f = path_for(type, key)
 
@@ -64,11 +80,21 @@ module Rufus
       nil
     end
 
+    # Gets a document (or nil if not found (or corrupted)).
+    #
     def get (type, key)
 
       lock(type, key) { |f| do_get(f) }
     end
 
+    # Attempts at deleting a document. You have to pass the current version
+    # or at least the { '_id' => i, 'type' => t, '_rev' => r }.
+    #
+    # Will return nil if the document wasn't found or if sucessful.
+    #
+    # If the deletion failed (older revision number ?), the current version
+    # of the document will be returned.
+    #
     def delete (doc)
 
       type, key = doc['type'], doc['_id']
@@ -83,6 +109,14 @@ module Rufus
       nil
     end
 
+    # Given a type, this method will return an array of all the documents for
+    # that type.
+    #
+    # A optional second parameter may be used to select, based on a regular
+    # expression, which documents to include (match on the key '_id').
+    #
+    # Will return an empty Hash if there is no documents for a given type.
+    #
     def get_many (type, key_match=nil)
 
       d = dir_for(type)
@@ -103,12 +137,12 @@ module Rufus
       end
     end
 
+    protected
+
     def self.neutralize (s)
 
       s.to_s.strip.gsub(/[ \/:;\*\\\+\?]/, '_')
     end
-
-    protected
 
     def do_get (file)
 

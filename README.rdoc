@@ -1,7 +1,7 @@
 
 = rufus-cloche
 
-A very stupid local json store.
+A very stupid local JSON store.
 
 Fast, thanks to yajl-ruby.
 

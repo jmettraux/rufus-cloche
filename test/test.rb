@@ -27,7 +27,7 @@ class ClocheTest < Test::Unit::TestCase
     assert_nil r
 
     h = fetch('person', 'john')
-    assert_equal '1', h['_rev']
+    assert_equal 1, h['_rev']
   end
 
   def test_put_fail
@@ -35,7 +35,7 @@ class ClocheTest < Test::Unit::TestCase
     @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
     r = @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'brown' })
 
-    assert_equal '1', r['_rev']
+    assert_equal 1, r['_rev']
 
     h = fetch('person', 'john')
     assert_equal 'green', h['eyes']
@@ -52,7 +52,7 @@ class ClocheTest < Test::Unit::TestCase
 
     @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
 
-    r = @c.delete({ '_id' => 'john', 'type' => 'person', '_rev' => '1' })
+    r = @c.delete({ '_id' => 'john', 'type' => 'person', '_rev' => 1 })
 
     assert_nil r
     assert_equal false, File.exist?(File.join(ROOT, 'person', 'john'))
