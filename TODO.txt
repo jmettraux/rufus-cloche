@@ -7,3 +7,5 @@
 [ ] fallback on regular json ?
 [ ] readme : get_many example
 
+[ ] need for a purge mecha
+

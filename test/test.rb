@@ -30,6 +30,13 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal 0, h['_rev']
   end
 
+  def test_put_insufficient_doc
+
+    assert_raise ArgumentError do
+      @c.put({ '_id' => 'john', 'eyes' => 'shut' })
+    end
+  end
+
   def test_put_fail
 
     @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
@@ -59,7 +66,7 @@ class ClocheTest < Test::Unit::TestCase
 
     r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
 
-    assert_nil r
+    assert_not_nil r
   end
 
   def test_delete

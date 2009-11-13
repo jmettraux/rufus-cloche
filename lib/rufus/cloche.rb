@@ -59,26 +59,33 @@ module Rufus
     #
     def put (doc)
 
-      doc['_rev'] ||= -1
-
       type, key = doc['type'], doc['_id']
 
-      cur = get(type, key)
-
-      return cur if cur && cur['_rev'] != doc['_rev']
-
-      doc['_rev'] = doc['_rev'] + 1
+      raise(
+        ArgumentError.new("missing values for keys 'type' and/or '_id'")
+      ) if type.nil? || key.nil?
 
       d, f = path_for(type, key)
-
-      FileUtils.mkdir_p(d) unless File.exist?(d)
-
       fn = File.join(d, f)
 
-      FileUtils.touch(fn)
+      rev = (doc['_rev'] ||= -1)
+
+      raise(
+        ArgumentError.new("values for '_rev' must be positive integers")
+      ) if rev.class != Fixnum && rev.class != Bignum
+
+      FileUtils.mkdir_p(d) unless File.exist?(d)
+      FileUtils.touch(fn) unless File.exist?(fn)
 
       lock(fn) do |f|
-        File.open(f, 'wb') { |ff| ff.write(Yajl::Encoder.encode(doc)) }
+
+        cur = do_get(f)
+
+        return cur if cur && cur['_rev'] != doc['_rev']
+
+        doc['_rev'] = doc['_rev'] + 1
+
+        File.open(f, 'wb') { |io| io.write(Yajl::Encoder.encode(doc)) }
       end
 
       nil
@@ -88,29 +95,39 @@ module Rufus
     #
     def get (type, key)
 
-      lock(type, key) { |f| do_get(f) }
+      r = lock(type, key) { |f| do_get(f) }
+      r == true ? nil : r
     end
 
     # Attempts at deleting a document. You have to pass the current version
     # or at least the { '_id' => i, 'type' => t, '_rev' => r }.
     #
-    # Will return nil if the document wasn't found or if sucessful.
+    # Will return nil if the deletion is successful.
     #
-    # If the deletion failed (older revision number ?), the current version
-    # of the document will be returned.
+    # If the deletion failed because the given doc has an older revision number
+    # that the one currently stored, the doc in its freshest version will be
+    # returned.
+    #
+    # Returns true if the deletion failed.
     #
     def delete (doc)
 
       type, key = doc['type'], doc['_id']
 
-      cur = get(type, key)
+      lock(type, key) do |f|
 
-      return nil unless cur
-      return cur if cur['_rev'] != doc['_rev']
+        cur = do_get(f)
 
-      lock(type, key) { |f| File.delete(f.path) }
+        return nil unless cur
+        return cur if cur['_rev'] != doc['_rev']
 
-      nil
+        begin
+          File.delete(f.path)
+          nil
+        rescue
+          true
+        end
+      end
     end
 
     # Given a type, this method will return an array of all the documents for
@@ -150,7 +167,7 @@ module Rufus
 
     def do_get (file)
 
-      Yajl::Parser.parse(file.read) rescue nil
+      Yajl::Parser.parse(file.read)
     end
 
     def dir_for (type)
@@ -163,7 +180,7 @@ module Rufus
       [ dir_for(type), "#{self.class.neutralize(key)}.json" ]
     end
 
-    def file_for (type_or_doc, key=nil)
+    def file_for (type_or_doc, key)
 
       fn = if key
         File.join(*path_for(type_or_doc, key))
@@ -173,14 +190,14 @@ module Rufus
         File.join(*path_for(type_or_doc['type'], type_or_doc['_id']))
       end
 
-      File.exist?(fn) ? File.new(fn) : nil
+      File.exist?(fn) ? (File.new(fn) rescue nil) : nil
     end
 
-    def lock (*args, &block)
+    def lock (type_or_doc, key=nil, &block)
 
-      file = file_for(*args)
+      file = file_for(type_or_doc, key)
 
-      return nil unless file
+      return true if file.nil?
 
       begin
         file.flock(File::LOCK_EX)

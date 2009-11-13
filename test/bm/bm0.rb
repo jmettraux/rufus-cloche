@@ -27,6 +27,7 @@ Benchmark.benchmark(' ' * 31 + Benchmark::Tms::CAPTION, 31) do |b|
   b.report('to cloche') do
     N.times do |i|
       DOC['_id'] = i.to_s
+      DOC['_rev'] = -1
       CLO.put(DOC)
     end
   end
