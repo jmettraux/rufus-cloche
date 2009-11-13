@@ -91,6 +91,19 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal 2, @c.get_many('person', /^j/).size
   end
 
+  def test_get_many_key_order
+
+    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
+    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+
+    assert_equal(
+      %w[ hiro jami john minehiko ],
+      @c.get_many('person').collect { |e| e['_id'] })
+  end
+
   protected
 
   def fetch (type, key)

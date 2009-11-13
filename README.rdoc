@@ -3,7 +3,9 @@
 
 A very stupid local JSON store.
 
-Fast, thanks to yajl-ruby.
+It's built on top of yajl-ruby and File.lock.
+
+It's process-safe, but not thread-safe.
 
 
 == mailing list
