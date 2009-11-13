@@ -85,7 +85,22 @@ module Rufus
 
     def get_many (type, key_match=nil)
 
-      # TODO
+      d = dir_for(type)
+
+      return [] unless File.exist?(d)
+
+      Dir[File.join(d, '*.json')].inject([]) do |a, fn|
+
+        key = File.basename(fn, '.json')
+
+        if (not key_match) || key.match(key_match)
+
+          doc = get(type, key)
+          a << doc if doc
+        end
+
+        a
+      end
     end
 
     def self.neutralize (s)

@@ -67,6 +67,30 @@ class ClocheTest < Test::Unit::TestCase
     assert_not_nil r
   end
 
+  def test_get_many
+
+    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
+    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+
+    assert_equal(
+      %w[ blue brown brown green ],
+      @c.get_many('person').collect { |e| e['eyes'] }.sort)
+  end
+
+  def test_get_many_with_key_match
+
+    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
+    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+
+    assert_equal 2, @c.get_many('person', /^j/).size
+  end
+
   protected
 
   def fetch (type, key)
