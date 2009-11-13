@@ -31,7 +31,11 @@ module Rufus
   #
   # A cloche is a local JSON store.
   #
+  # Warning : cloches are process-safe but not thread-safe.
+  #
   class Cloche
+
+    VERSION = '0.1.0'
 
     attr_reader :dir
 
@@ -55,7 +59,7 @@ module Rufus
     #
     def put (doc)
 
-      doc['_rev'] ||= 0
+      doc['_rev'] ||= -1
 
       type, key = doc['type'], doc['_id']
 

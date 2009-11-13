@@ -4,3 +4,5 @@
 
 [ ] LRU ?
 
+[ ] fallback on regular json ?
+
