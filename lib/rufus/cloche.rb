@@ -22,6 +22,7 @@
 # Made in Japan.
 #++
 
+require 'thread'
 require 'fileutils'
 
 begin
@@ -65,6 +66,7 @@ module Rufus
     def initialize (opts={})
 
       @dir = File.expand_path(opts[:dir] || 'cloche')
+      @mutex = Mutex.new
     end
 
     # Puts a document (Hash) under the cloche.
@@ -222,7 +224,7 @@ module Rufus
 
       begin
         file.flock(File::LOCK_EX)
-        block.call(file)
+        @mutex.synchronize { block.call(file) }
       ensure
         begin
           file.flock(File::LOCK_UN)

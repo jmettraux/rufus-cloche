@@ -5,7 +5,7 @@ A very stupid local JSON store.
 
 It's built on top of yajl-ruby and File.lock.
 
-Warning : it's process-safe, but not thread-safe.
+Strives to be process-safe and thread-safe.
 
 
 == usage

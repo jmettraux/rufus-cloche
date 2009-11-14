@@ -2,12 +2,11 @@
 [x] !! test for type change. Not covered. Have to delete + put.
 [x] use 1! lock for put. It's OK for now
 [o] fall back on regular json
+[o] thread-safe
 
 [ ] LRU ?
 
 [ ] readme : get_many example
 
 [ ] need for a purge mecha
-
-[ ] thread-safe
 
