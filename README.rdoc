@@ -3,12 +3,18 @@
 
 A very stupid local JSON store.
 
-It's built on top of yajl-ruby and File.lock.
+It's built on top of yajl-ruby and File.lock. Defaults to 'json' (or 'json_pure') if yajl-ruby is not present (it's probably just a "gem install yajl-ruby" away.
 
 Strives to be process-safe and thread-safe.
 
+The philosophy here is : every document has a revision number. You have to provide the latest revision number in order to update sucessfully a document (else the 'put' will fail and you'll return the latest version of the document (as a new starting point)).
+
+A cloche assumes your documents have a 'type' and it stores documents in separate dirs, one per type.
+
 
 == usage
+
+Basic operations :
 
   require 'rubygems'
   require 'rufus-cloche' # gem install rufus-cloche
@@ -39,6 +45,17 @@ Strives to be process-safe and thread-safe.
     # => { "_id" => "invitation05", "type"=>"letter", "to" => "The Count", "_rev" => 1 }
     #
     # the update failed, the method returned the current version of the document
+
+It's OK to get a document, but it's sometimes better to get many of them :
+
+  docs = get_many('letter')
+    # returns an array containing *all* the documents with the type 'letter'
+
+  docs = get_many('letter', /^invitation/)
+    # returns all the documents whose _id begins with "invitation"
+
+  docs = get_many('letter', /\/2009\//)
+    # returns all the 2009 letters (assuming their _id contains the string "/2009/"
 
 
 == mailing list

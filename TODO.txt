@@ -3,10 +3,11 @@
 [x] use 1! lock for put. It's OK for now
 [o] fall back on regular json
 [o] thread-safe
+[o] readme : get_many example
 
 [ ] LRU ?
 
-[ ] readme : get_many example
-
 [ ] need for a purge mecha
+
+[ ] subdir for types (2 *first* ascii chars argh)
 
