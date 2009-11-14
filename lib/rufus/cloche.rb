@@ -23,7 +23,12 @@
 #++
 
 require 'fileutils'
-require 'yajl'
+
+begin
+  require 'yajl'
+rescue LoadError
+  require 'json'
+end
 
 
 module Rufus
@@ -34,6 +39,22 @@ module Rufus
   # Warning : cloches are process-safe but not thread-safe.
   #
   class Cloche
+
+    if defined?(Yajl)
+      def self.json_decode (s)
+        Yajl::Parser.parse(s)
+      end
+      def self.json_encode (o)
+        Yajl::Encoder.encode(o)
+      end
+    else
+      def self.json_decode (s)
+        ::JSON.parse(s)
+      end
+      def self.json_encode (o)
+        o.to_json
+      end
+    end
 
     VERSION = '0.1.0'
 
@@ -85,8 +106,7 @@ module Rufus
 
         doc['_rev'] = doc['_rev'] + 1
 
-        #File.open(f, 'wb') { |io| io.write(Yajl::Encoder.encode(doc)) }
-        File.open(f, 'wb') { |io| io.write(doc.to_json) }
+        File.open(f, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
       end
 
       nil
@@ -168,7 +188,7 @@ module Rufus
 
     def do_get (file)
 
-      Yajl::Parser.parse(file.read)
+      Cloche.json_decode(file.read) rescue nil
     end
 
     def dir_for (type)

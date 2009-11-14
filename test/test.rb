@@ -130,7 +130,7 @@ class ClocheTest < Test::Unit::TestCase
   def fetch (type, key)
 
     s = File.read(File.join(ROOT, 'tcloche', type, "#{key}.json"))
-    Yajl::Parser.parse(s)
+    Rufus::Cloche.json_decode(s)
   end
 end
 

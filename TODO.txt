@@ -1,10 +1,10 @@
 
 [x] !! test for type change. Not covered. Have to delete + put.
 [x] use 1! lock for put. It's OK for now
+[o] fall back on regular json
 
 [ ] LRU ?
 
-[ ] fall back on regular json
 [ ] readme : get_many example
 
 [ ] need for a purge mecha
