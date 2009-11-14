@@ -22,14 +22,14 @@
 # Made in Japan.
 #++
 
-require 'yajl'
 require 'fileutils'
+require 'yajl'
 
 
 module Rufus
 
   #
-  # A cloche is a local JSON store.
+  # A cloche is a local JSON hashes store.
   #
   # Warning : cloches are process-safe but not thread-safe.
   #
@@ -85,7 +85,8 @@ module Rufus
 
         doc['_rev'] = doc['_rev'] + 1
 
-        File.open(f, 'wb') { |io| io.write(Yajl::Encoder.encode(doc)) }
+        #File.open(f, 'wb') { |io| io.write(Yajl::Encoder.encode(doc)) }
+        File.open(f, 'wb') { |io| io.write(doc.to_json) }
       end
 
       nil

@@ -4,8 +4,10 @@
 
 [ ] LRU ?
 
-[ ] fallback on regular json ?
+[ ] fall back on regular json
 [ ] readme : get_many example
 
 [ ] need for a purge mecha
+
+[ ] thread-safe
 

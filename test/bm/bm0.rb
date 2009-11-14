@@ -32,6 +32,8 @@ Benchmark.benchmark(' ' * 31 + Benchmark::Tms::CAPTION, 31) do |b|
     end
   end
 
+  puts
+
   b.report('marshal from file') do
     N.times do
       doc = Marshal.load(File.read('out.marshal'))
@@ -47,5 +49,18 @@ Benchmark.benchmark(' ' * 31 + Benchmark::Tms::CAPTION, 31) do |b|
       doc = CLO.get('benchmark', i.to_s)
     end
   end
+
+  #puts
+  #require 'json'
+  #b.report('json to file') do
+  #  N.times do
+  #    File.open('out.json', 'wb') { |f| f.write(DOC.to_json) }
+  #  end
+  #end
+  #b.report('json from file') do
+  #  N.times do
+  #    doc = ::JSON.parse(File.read('out.json'))
+  #  end
+  #end
 end
 
