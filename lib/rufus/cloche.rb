@@ -167,7 +167,7 @@ module Rufus
 
       return [] unless File.exist?(d)
 
-      Dir[File.join(d, '*.json')].inject([]) do |a, fn|
+      Dir[File.join(d, '**', '*.json')].inject([]) { |a, fn|
 
         key = File.basename(fn, '.json')
 
@@ -178,7 +178,9 @@ module Rufus
         end
 
         a
-      end
+      }.sort { |doc0, doc1|
+        doc0['_id'] <=> doc1['_id']
+      }
     end
 
     protected
@@ -195,12 +197,17 @@ module Rufus
 
     def dir_for (type)
 
-      File.join(@dir, self.class.neutralize(type || 'no_type'))
+      File.join(@dir, Cloche.neutralize(type || 'no_type'))
     end
 
     def path_for (type, key)
 
-      [ dir_for(type), "#{self.class.neutralize(key)}.json" ]
+      nkey = Cloche.neutralize(key)
+
+      [
+        File.join(dir_for(type), nkey[-2, 2] || nkey),
+        "#{nkey}.json"
+      ]
     end
 
     def file_for (type_or_doc, key)

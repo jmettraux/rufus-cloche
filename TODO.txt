@@ -4,10 +4,9 @@
 [o] fall back on regular json
 [o] thread-safe
 [o] readme : get_many example
+[o] subdir for types (2 last ascii chars argh)
 
 [ ] LRU ?
 
 [ ] need for a purge mecha
-
-[ ] subdir for types (2 *first* ascii chars argh)
 

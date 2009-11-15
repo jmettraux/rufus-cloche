@@ -13,9 +13,9 @@ require File.join(ROOT, %w[ lib rufus cloche.rb ])
 class ClocheTest < Test::Unit::TestCase
 
   def setup
-    cloche_dir = File.join(ROOT, 'tcloche')
-    FileUtils.rm_rf(cloche_dir) rescue nil
-    @c = Rufus::Cloche.new(:dir => cloche_dir)
+    @c_dir = File.join(ROOT, 'tcloche')
+    FileUtils.rm_rf(@c_dir) rescue nil
+    @c = Rufus::Cloche.new(:dir => @c_dir)
   end
   #def teardown
   #end
@@ -28,6 +28,22 @@ class ClocheTest < Test::Unit::TestCase
 
     h = fetch('person', 'john')
     assert_equal 0, h['_rev']
+  end
+
+  def test_depth
+
+    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+
+    assert_equal(
+      "test/../tcloche/person/hn/john.json",
+      Dir[File.join(@c_dir, %w[ ** *.json ])].first)
+  end
+
+  def test_small_id
+
+    r = @c.put({ '_id' => '0', 'type' => 'person', 'eyes' => 'green' })
+
+    assert_nil r
   end
 
   def test_put_insufficient_doc
@@ -129,7 +145,7 @@ class ClocheTest < Test::Unit::TestCase
 
   def fetch (type, key)
 
-    s = File.read(File.join(ROOT, 'tcloche', type, "#{key}.json"))
+    s = File.read(File.join(ROOT, 'tcloche', type, key[-2, 2], "#{key}.json"))
     Rufus::Cloche.json_decode(s)
   end
 end
