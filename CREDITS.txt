@@ -1,0 +1,4 @@
+
+many thanks to Brian Lopez for yajl-ruby
+  http://github.com/brianmario
+

@@ -1,0 +1,6 @@
+
+= rufus-cloche CHANGELOG.txt
+
+
+== rufus-cloche - 0.1.0    released 2009/11/16
+
