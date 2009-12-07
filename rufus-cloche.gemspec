@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
 
   s.name = 'rufus-cloche'
-  s.version = '0.1.0'
+  s.version = '0.1.1'
   s.authors = [ 'John Mettraux' ]
   s.email = 'jmettraux@gmail.com'
   s.homepage = 'http://github.com/jmettraux/rufus-cloche/'
@@ -28,6 +28,8 @@ Strives to be process-safe and thread-safe.
   #  s.requirements << d
   #  s.add_dependency(d)
   #end
+
   #s.files = Dir['lib/**/*.rb'] + Dir['*.txt'] - [ 'lib/tokyotyrant.rb' ]
+  s.files = Dir['lib/**/*.rb'] + Dir['*.txt']
 end
 

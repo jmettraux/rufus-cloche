@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.0'
+    VERSION = '0.1.1'
 
     attr_reader :dir
 
