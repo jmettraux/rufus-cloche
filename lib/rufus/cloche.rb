@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.1'
+    VERSION = '0.1.2'
 
     attr_reader :dir
 
@@ -100,15 +100,15 @@ module Rufus
       FileUtils.mkdir_p(d) unless File.exist?(d)
       FileUtils.touch(fn) unless File.exist?(fn)
 
-      lock(fn) do |f|
+      lock(fn) do |file|
 
-        cur = do_get(f)
+        cur = do_get(file)
 
         return cur if cur && cur['_rev'] != doc['_rev']
 
         doc['_rev'] = doc['_rev'] + 1
 
-        File.open(f, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
+        File.open(file, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
       end
 
       nil
