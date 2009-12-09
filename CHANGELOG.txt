@@ -1,7 +1,7 @@
 
 = rufus-cloche CHANGELOG.txt
 
-== rufus-cloche - 0.1.2    not yet released
+== rufus-cloche - 0.1.2    released 2009/12/09
 
 - avoiding dir beginning with a '.' (dot)
 
