@@ -141,6 +141,15 @@ class ClocheTest < Test::Unit::TestCase
       @c.get_many('person').collect { |e| e['_id'] })
   end
 
+  def test_dot_id
+
+    @c.put({ '_id' => 'something.0', 'type' => 'nothing', 'color' => 'blue' })
+
+    #puts `tree -a tcloche`
+
+    assert_equal 1, @c.get_many('nothing').size
+  end
+
   protected
 
   def fetch (type, key)

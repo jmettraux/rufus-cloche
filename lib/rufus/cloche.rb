@@ -204,10 +204,9 @@ module Rufus
 
       nkey = Cloche.neutralize(key)
 
-      [
-        File.join(dir_for(type), nkey[-2, 2] || nkey),
-        "#{nkey}.json"
-      ]
+      subdir = (nkey[-2, 2] || nkey).gsub(/\./, 'Z')
+
+      [ File.join(dir_for(type), subdir), "#{nkey}.json" ]
     end
 
     def file_for (type_or_doc, key)
