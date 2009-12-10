@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.2'
+    VERSION = '0.1.3'
 
     attr_reader :dir
 
@@ -161,26 +161,44 @@ module Rufus
     #
     # Will return an empty Hash if there is no documents for a given type.
     #
-    def get_many (type, key_match=nil)
+    # == opts
+    #
+    # The only option know for now is :limit, which limits the number of
+    # documents returned.
+    #
+    def get_many (type, key_match=nil, opts={})
 
       d = dir_for(type)
 
       return [] unless File.exist?(d)
 
-      Dir[File.join(d, '**', '*.json')].inject([]) { |a, fn|
+      docs = []
+      limit = opts[:limit]
+
+      files = Dir[File.join(d, '**', '*.json')].sort { |p0, p1|
+        File.basename(p0) <=> File.basename(p1)
+      }
+
+      files.each do |fn|
 
         key = File.basename(fn, '.json')
 
         if (not key_match) || key.match(key_match)
 
           doc = get(type, key)
-          a << doc if doc
-        end
+          docs << doc if doc
 
-        a
-      }.sort { |doc0, doc1|
-        doc0['_id'] <=> doc1['_id']
-      }
+          break if limit && (docs.size >= limit)
+        end
+      end
+
+      # WARNING : there is a twist here, the filenames may have a different
+      #           sort order from actual _ids...
+
+      #docs.sort { |doc0, doc1| doc0['_id'] <=> doc1['_id'] }
+        # let's trust filename order
+
+      docs
     end
 
     protected

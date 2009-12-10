@@ -1,9 +1,17 @@
 
 = rufus-cloche CHANGELOG.txt
 
+
+== rufus-cloche - 0.1.3    released 2009/12/10
+
+- added the :limit option to Cloche#get_many
+- Cloche#get_many sorting by filenames (not by id anymore)
+
+
 == rufus-cloche - 0.1.2    released 2009/12/09
 
 - avoiding dir beginning with a '.' (dot)
+
 
 == rufus-cloche - 0.1.1    released 2009/11/16
 

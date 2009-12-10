@@ -106,11 +106,7 @@ class ClocheTest < Test::Unit::TestCase
 
   def test_get_many
 
-    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
-    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
-    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+    load_people
 
     assert_equal(
       %w[ blue brown brown green ],
@@ -119,26 +115,27 @@ class ClocheTest < Test::Unit::TestCase
 
   def test_get_many_with_key_match
 
-    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
-    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
-    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+    load_people
 
     assert_equal 2, @c.get_many('person', /^j/).size
   end
 
   def test_get_many_key_order
 
-    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
-    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
-    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
-    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+    load_people
 
     assert_equal(
       %w[ hiro jami john minehiko ],
       @c.get_many('person').collect { |e| e['_id'] })
+  end
+
+  def test_get_many_limit
+
+    load_people
+
+    assert_equal(
+      %w[ hiro jami ],
+      @c.get_many('person', nil, :limit => 2).collect { |e| e['_id'] })
   end
 
   def test_dot_id
@@ -151,6 +148,15 @@ class ClocheTest < Test::Unit::TestCase
   end
 
   protected
+
+  def load_people
+
+    @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    @c.put({ '_id' => 'jami', 'type' => 'person', 'eyes' => 'blue' })
+    @c.put({ '_id' => 'minehiko', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'hiro', 'type' => 'person', 'eyes' => 'brown' })
+    @c.put({ '_id' => 'chicko-chan', 'type' => 'animal', 'eyes' => 'black' })
+  end
 
   def fetch (type, key)
 
