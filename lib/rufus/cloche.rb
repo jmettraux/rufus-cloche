@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.3'
+    VERSION = '0.1.4'
 
     attr_reader :dir
 
@@ -135,6 +135,10 @@ module Rufus
     #
     def delete (doc)
 
+      drev = doc['_rev']
+
+      raise ArgumentError.new('cannot delete doc without _rev') unless drev
+
       type, key = doc['type'], doc['_id']
 
       lock(type, key) do |f|
@@ -142,7 +146,7 @@ module Rufus
         cur = do_get(f)
 
         return nil unless cur
-        return cur if cur['_rev'] != doc['_rev']
+        return cur if cur['_rev'] != drev
 
         begin
           File.delete(f.path)

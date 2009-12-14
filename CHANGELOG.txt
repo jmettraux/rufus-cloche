@@ -1,6 +1,10 @@
 
 = rufus-cloche CHANGELOG.txt
 
+== rufus-cloche - 0.1.4    released 2009/12/14
+
+- ArgumentError raised in case of delete(doc) that has no _rev
+
 
 == rufus-cloche - 0.1.3    released 2009/12/10
 

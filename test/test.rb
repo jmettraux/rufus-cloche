@@ -80,7 +80,7 @@ class ClocheTest < Test::Unit::TestCase
 
   def test_delete_missing
 
-    r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green', '_rev' => 7 })
 
     assert_not_nil r
   end
@@ -99,9 +99,16 @@ class ClocheTest < Test::Unit::TestCase
 
     @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
 
-    r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green', '_rev' => 9 })
 
     assert_not_nil r
+  end
+
+  def test_delete_without_rev
+
+    assert_raise(ArgumentError) do
+      @c.delete({ '_id' => 'john', 'type' => 'person' })
+    end
   end
 
   def test_get_many

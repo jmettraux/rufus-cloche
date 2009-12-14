@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
 
   s.name = 'rufus-cloche'
-  s.version = '0.1.3'
+  s.version = '0.1.4'
   s.authors = [ 'John Mettraux' ]
   s.email = 'jmettraux@gmail.com'
   s.homepage = 'http://github.com/jmettraux/rufus-cloche/'
