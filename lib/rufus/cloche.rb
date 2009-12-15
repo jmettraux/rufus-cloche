@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.5'
+    VERSION = '0.1.6'
 
     attr_reader :dir
 
@@ -108,7 +108,7 @@ module Rufus
 
         doc['_rev'] = doc['_rev'] + 1
 
-        File.open(file, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
+        File.open(file.path, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
       end
 
       nil

@@ -1,6 +1,12 @@
 
 = rufus-cloche CHANGELOG.txt
 
+
+== rufus-cloche - 0.1.6    not yet released
+
+- made sure it works on ruby 1.8.7
+
+
 == rufus-cloche - 0.1.5    released 2009/12/15
 
 - fixed "too many files open issue"

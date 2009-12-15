@@ -5,10 +5,13 @@
 # Fri Nov 13 09:09:58 JST 2009
 #
 
+require 'rubygems'
+
 ROOT = File.join(File.dirname(__FILE__), '..')
 
 require 'test/unit'
 require File.join(ROOT, %w[ lib rufus cloche.rb ])
+
 
 class ClocheTest < Test::Unit::TestCase
 
