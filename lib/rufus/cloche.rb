@@ -57,7 +57,7 @@ module Rufus
       end
     end
 
-    VERSION = '0.1.4'
+    VERSION = '0.1.5'
 
     attr_reader :dir
 
@@ -260,6 +260,7 @@ module Rufus
           #p [ :lock, @fpath, e ]
           #e.backtrace.each { |l| puts l }
         end
+        file.close rescue nil
       end
     end
   end

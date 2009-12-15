@@ -13,8 +13,18 @@ require File.join(ROOT, %w[ lib rufus cloche.rb ])
 class ClocheTest < Test::Unit::TestCase
 
   def setup
+
+    #lsof = `lsof -p #{$$}`
+    #puts '=' * 70
+    #puts lsof
+    #puts
+    #puts lsof.split("\n").size
+    #puts '=' * 70
+
     @c_dir = File.join(ROOT, 'tcloche')
+
     FileUtils.rm_rf(@c_dir) rescue nil
+
     @c = Rufus::Cloche.new(:dir => @c_dir)
   end
   #def teardown
