@@ -1,78 +1,77 @@
 
 require 'rubygems'
-
-require 'fileutils'
 require 'rake'
+
+
+load 'lib/rufus/cloche.rb'
+
+
+#
+# CLEAN
+
 require 'rake/clean'
-require 'rake/packagetask'
-require 'rake/gempackagetask'
-#require 'rake/testtask'
-
-
-gemspec = File.read('rufus-cloche.gemspec')
-eval "gemspec = #{gemspec}"
-
-#
-# tasks
-
 CLEAN.include('pkg', 'tmp', 'html')
-
-task :default => [ :clean, :repackage ]
-
-
-#
-# VERSION
-
-task :change_version do
-
-  version = ARGV.pop
-  `sedip "s/VERSION = '.*'/VERSION = '#{version}'/" lib/rufus/cloche.rb`
-  `sedip "s/s.version = '.*'/s.version = '#{version}'/" rufus-cloche.gemspec`
-  exit 0 # prevent rake from triggering other tasks
-end
+task :default => [ :clean ]
 
 
 #
-# PACKAGING
+# GEM
 
-Rake::GemPackageTask.new(gemspec) do |pkg|
-  #pkg.need_tar = true
+require 'jeweler'
+
+Jeweler::Tasks.new do |gem|
+
+  gem.version = Rufus::Cloche::VERSION
+  gem.name = 'rufus-cloche'
+  gem.summary = 'a very stupid JSON hash store'
+  gem.description = %{
+A very stupid JSON hash store.
+
+It's built on top of yajl-ruby and File.lock. Defaults to 'json' (or 'json_pure') if yajl-ruby is not present (it's probably just a "gem install yajl-ruby" away.
+
+Strives to be process-safe and thread-safe.
+  }
+  gem.email = 'jmettraux@gmail.com'
+  gem.homepage = 'http://github.com/jmettraux/rufus-cloche/'
+  gem.authors = [ 'John Mettraux' ]
+  gem.rubyforge_project = 'rufus'
+
+  gem.test_file = 'test/test.rb'
+
+  gem.add_dependency 'yajl-ruby'
+  gem.add_development_dependency "yard", ">= 0"
+
+  # gemspec spec : http://www.rubygems.org/read/chapter/20
 end
+Jeweler::GemcutterTasks.new
 
-Rake::PackageTask.new('rufus-cloche', gemspec.version) do |pkg|
 
-  pkg.need_zip = true
-  pkg.package_files = FileList[
-    'Rakefile',
-    '*.txt',
-    'lib/**/*',
-    'spec/**/*',
-    'test/**/*'
-  ].to_a
-  #pkg.package_files.delete("MISC.txt")
-  class << pkg
-    def package_name
-      "#{@name}-#{@version}-src"
-    end
+#
+# DOC
+
+begin
+
+  require 'yard'
+
+  YARD::Rake::YardocTask.new do |doc|
+    doc.options = [
+      '-o', 'html/rufus-cloche', '--title',
+      "rufus-cloche #{Rufus::Cloche::VERSION}"
+    ]
+  end
+
+rescue LoadError
+
+  task :yard do
+    abort "YARD is not available : sudo gem install yard"
   end
 end
 
 
 #
-# DOCUMENTATION
+# TO THE WEB
 
-task :rdoc do
-  sh %{
-    rm -fR html
-    yardoc 'lib/**/*.rb' -o html/rufus-cloche --title 'rufus-cloche' --files CHANGELOG.txt,LICENSE.txt,CREDITS.txt
-  }
-end
-
-
-#
-# WEBSITE
-
-task :upload_website => [ :clean, :rdoc ] do
+task :upload_website => [ :clean, :yard ] do
 
   account = 'jmettraux@rubyforge.org'
   webdir = '/var/www/gforge-projects/rufus'

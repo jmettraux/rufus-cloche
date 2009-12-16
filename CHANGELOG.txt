@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 0.1.6    not yet released
+== rufus-cloche - 0.1.6    released 2009/12/16
 
 - made sure it works on ruby 1.8.7
 
