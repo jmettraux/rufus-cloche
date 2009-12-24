@@ -38,8 +38,9 @@ Strives to be process-safe and thread-safe.
 
   gem.test_file = 'test/test.rb'
 
-  gem.add_dependency 'yajl-ruby'
-  gem.add_development_dependency "yard", ">= 0"
+  #gem.add_dependency 'yajl-ruby'
+  #gem.add_dependency 'json'
+  gem.add_development_dependency 'yard', '>= 0'
 
   # gemspec spec : http://www.rubygems.org/read/chapter/20
 end
