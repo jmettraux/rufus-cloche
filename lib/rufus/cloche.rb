@@ -30,6 +30,7 @@ begin
 rescue LoadError
   require 'json'
 end
+require 'rufus/json'
 
 
 module Rufus
@@ -41,23 +42,7 @@ module Rufus
   #
   class Cloche
 
-    if defined?(Yajl)
-      def self.json_decode (s)
-        Yajl::Parser.parse(s)
-      end
-      def self.json_encode (o)
-        Yajl::Encoder.encode(o)
-      end
-    else
-      def self.json_decode (s)
-        ::JSON.parse(s)
-      end
-      def self.json_encode (o)
-        o.to_json
-      end
-    end
-
-    VERSION = '0.1.7'
+    VERSION = '0.1.8'
 
     attr_reader :dir
 
@@ -108,7 +93,7 @@ module Rufus
 
         doc['_rev'] = doc['_rev'] + 1
 
-        File.open(file.path, 'wb') { |io| io.write(Cloche.json_encode(doc)) }
+        File.open(file.path, 'wb') { |io| io.write(Rufus::Json.encode(doc)) }
       end
 
       nil
@@ -214,7 +199,7 @@ module Rufus
 
     def do_get (file)
 
-      Cloche.json_decode(file.read) rescue nil
+      Rufus::Json.decode(file.read) rescue nil
     end
 
     def dir_for (type)

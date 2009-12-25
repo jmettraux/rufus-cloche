@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.8    released 2009/12/25
+
+- now using rufus-json
+
+
 == rufus-cloche - 0.1.7    released 2009/12/24
 
 - removed forced dependency on yajl-ruby

@@ -181,7 +181,7 @@ class ClocheTest < Test::Unit::TestCase
   def fetch (type, key)
 
     s = File.read(File.join(ROOT, 'tcloche', type, key[-2, 2], "#{key}.json"))
-    Rufus::Cloche.json_decode(s)
+    Rufus::Json.decode(s)
   end
 end
 
