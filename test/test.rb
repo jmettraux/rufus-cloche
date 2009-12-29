@@ -91,6 +91,22 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal 1, h['_rev']
   end
 
+  def test_put_gone
+
+    @c.put(
+      { '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    @c.delete(
+      { '_id' => 'john', 'type' => 'person', '_rev' => 0 })
+
+    assert_nil @c.get('person', 'john')
+
+    r = @c.put(
+      { '_id' => 'john', 'type' => 'person', 'eyes' => 'blue', '_rev' => 0 })
+
+    assert_equal true, r
+    assert_nil @c.get('person', 'john')
+  end
+
   def test_delete_missing
 
     r = @c.delete({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green', '_rev' => 7 })

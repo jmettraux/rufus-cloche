@@ -42,7 +42,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.8'
+    VERSION = '0.1.9'
 
     attr_reader :dir
 
@@ -90,6 +90,7 @@ module Rufus
         cur = do_get(file)
 
         return cur if cur && cur['_rev'] != doc['_rev']
+        return true if cur.nil? && doc['_rev'] != -1
 
         doc['_rev'] = doc['_rev'] + 1
 
