@@ -1,6 +1,10 @@
 
 = rufus-cloche CHANGELOG.txt
 
+== rufus-cloche - 0.1.10    not yet released
+
+- now put doesn't touch passed doc unless :update_rev => true
+
 
 == rufus-cloche - 0.1.9    released 2009/12/29
 

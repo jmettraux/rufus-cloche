@@ -35,9 +35,12 @@ class ClocheTest < Test::Unit::TestCase
 
   def test_put
 
-    r = @c.put({ '_id' => 'john', 'type' => 'person', 'eyes' => 'green' })
+    doc = { '_id' => 'john', 'type' => 'person', 'eyes' => 'green' }
+
+    r = @c.put(doc)
 
     assert_nil r
+    assert_nil doc['_rev']
 
     h = fetch('person', 'john')
     assert_equal 0, h['_rev']

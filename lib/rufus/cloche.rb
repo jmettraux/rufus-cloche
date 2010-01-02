@@ -25,12 +25,9 @@
 require 'thread'
 require 'fileutils'
 
-begin
-  require 'yajl'
-rescue LoadError
-  require 'json'
-end
+require 'yajl' rescue require 'json'
 require 'rufus/json'
+Rufus::Json.detect_backend
 
 
 module Rufus
@@ -42,7 +39,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.9'
+    VERSION = '0.1.10'
 
     attr_reader :dir
 
@@ -65,7 +62,10 @@ module Rufus
     #
     # If the put is successful, nil is returned.
     #
-    def put (doc)
+    def put (doc, opts={})
+
+      doc = Rufus::Json.dup(doc) unless opts[:update_rev]
+        # work with a copy, don't touch orgiinal
 
       type, key = doc['type'], doc['_id']
 
