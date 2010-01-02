@@ -1,8 +1,10 @@
 
 = rufus-cloche CHANGELOG.txt
 
+
 == rufus-cloche - 0.1.10    not yet released
 
+- increased mutex coverage (though flock matters more)
 - now put doesn't touch passed doc unless :update_rev => true
 
 

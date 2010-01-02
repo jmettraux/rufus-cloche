@@ -73,19 +73,13 @@ module Rufus
         ArgumentError.new("missing values for keys 'type' and/or '_id'")
       ) if type.nil? || key.nil?
 
-      d, f = path_for(type, key)
-      fn = File.join(d, f)
-
       rev = (doc['_rev'] ||= -1)
 
       raise(
         ArgumentError.new("values for '_rev' must be positive integers")
       ) if rev.class != Fixnum && rev.class != Bignum
 
-      FileUtils.mkdir_p(d) unless File.exist?(d)
-      FileUtils.touch(fn) unless File.exist?(fn)
-
-      lock(fn) do |file|
+      lock(true, type, key) do |file|
 
         cur = do_get(file)
 
@@ -104,8 +98,9 @@ module Rufus
     #
     def get (type, key)
 
-      r = lock(type, key) { |f| do_get(f) }
-      r == true ? nil : r
+      r = lock(false, type, key) { |f| do_get(f) }
+
+      r == false ? nil : r
     end
 
     # Attempts at deleting a document. You have to pass the current version
@@ -127,7 +122,7 @@ module Rufus
 
       type, key = doc['type'], doc['_id']
 
-      lock(type, key) do |f|
+      r = lock(false, type, key) do |f|
 
         cur = do_get(f)
 
@@ -138,9 +133,11 @@ module Rufus
           File.delete(f.path)
           nil
         rescue
-          true
+          false
         end
       end
+
+      r == false ? true : nil
     end
 
     # Given a type, this method will return an array of all the documents for
@@ -217,36 +214,35 @@ module Rufus
       [ File.join(dir_for(type), subdir), "#{nkey}.json" ]
     end
 
-    def file_for (type_or_doc, key)
+    def lock (create, type, key, &block)
 
-      fn = if key
-        File.join(*path_for(type_or_doc, key))
-      elsif type_or_doc.is_a?(String)
-        type_or_doc
-      else # it's a doc (Hash)
-        File.join(*path_for(type_or_doc['type'], type_or_doc['_id']))
-      end
-
-      File.exist?(fn) ? (File.new(fn) rescue nil) : nil
-    end
-
-    def lock (type_or_doc, key=nil, &block)
-
-      file = file_for(type_or_doc, key)
-
-      return true if file.nil?
-
-      begin
-        file.flock(File::LOCK_EX)
-        @mutex.synchronize { block.call(file) }
-      ensure
+      @mutex.synchronize do
         begin
-          file.flock(File::LOCK_UN)
-        rescue Exception => e
-          #p [ :lock, @fpath, e ]
-          #e.backtrace.each { |l| puts l }
+
+          d, f = path_for(type, key)
+          fn = File.join(d, f)
+
+          if create && ( ! File.exist?(fn))
+            FileUtils.mkdir_p(d) unless File.exist?(d)
+            FileUtils.touch(fn) unless File.exist?(fn)
+          end
+
+          file = File.new(fn) rescue nil
+
+          return false if file.nil?
+
+          file.flock(File::LOCK_EX)
+          block.call(file)
+
+        ensure
+          begin
+            file.flock(File::LOCK_UN)
+          rescue Exception => e
+            #p [ :lock, @fpath, e ]
+            #e.backtrace.each { |l| puts l }
+          end
+          file.close rescue nil
         end
-        file.close rescue nil
       end
     end
   end

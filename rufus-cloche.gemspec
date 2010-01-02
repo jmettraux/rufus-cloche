@@ -33,6 +33,7 @@ Strives to be process-safe and thread-safe.
      "lib/rufus/cloche.rb",
      "rufus-cloche.gemspec",
      "test/bm/bm0.rb",
+     "test/con/put_vs_delete.rb",
      "test/ct_worker.rb",
      "test/ct_writer.rb",
      "test/test.rb"
