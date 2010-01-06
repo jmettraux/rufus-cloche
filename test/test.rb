@@ -186,6 +186,19 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal 1, @c.get_many('nothing').size
   end
 
+  def test_purge_type
+
+    @c.put({ '_id' => 'thing.0', 'type' => 'unthing', 'color' => 'blue' })
+    @c.put({ '_id' => 'thing.1', 'type' => 'unthing', 'color' => 'blue' })
+    @c.put({ '_id' => 'thing.2', 'type' => 'unthing', 'color' => 'blue' })
+
+    assert_equal 3, @c.get_many('unthing').size
+
+    @c.purge_type!('unthing')
+
+    assert_equal 0, @c.get_many('unthing').size
+  end
+
   protected
 
   def load_people

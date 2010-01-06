@@ -2,6 +2,16 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.12    released 2010/01/06
+
+- implemented Cloche#purge_type!(t)
+
+
+== rufus-cloche - 0.1.11    released 2010/01/06
+
+- test/con to test/conc, thanks gauched
+
+
 == rufus-cloche - 0.1.10    released 2010/01/03
 
 - increased mutex coverage (though flock matters more)
