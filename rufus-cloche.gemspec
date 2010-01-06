@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rufus-cloche}
-  s.version = "0.1.10"
+  s.version = "0.1.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Mettraux"]
-  s.date = %q{2010-01-03}
+  s.date = %q{2010-01-06}
   s.description = %q{
 A very stupid JSON hash store.
 
@@ -33,7 +33,7 @@ Strives to be process-safe and thread-safe.
      "lib/rufus/cloche.rb",
      "rufus-cloche.gemspec",
      "test/bm/bm0.rb",
-     "test/con/put_vs_delete.rb",
+     "test/conc/put_vs_delete.rb",
      "test/ct_worker.rb",
      "test/ct_writer.rb",
      "test/test.rb"

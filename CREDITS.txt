@@ -2,3 +2,15 @@
 many thanks to Brian Lopez for yajl-ruby
   http://github.com/brianmario
 
+
+= rufus-cloche
+
+== authors
+
+John Mettraux  http://github.com/jmettraux
+
+
+== feedback
+
+gauched  http://github.com/gauched
+
