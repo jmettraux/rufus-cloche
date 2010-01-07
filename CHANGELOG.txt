@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 0.1.13    not yet released
+== rufus-cloche - 0.1.13    released 2010/01/07
 
 - implemented Cloche#ids(type) and Cloche#real_ids(type)
 
