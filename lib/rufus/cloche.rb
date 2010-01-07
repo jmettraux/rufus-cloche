@@ -43,7 +43,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.12'
+    VERSION = '0.1.13'
 
     attr_reader :dir
 
@@ -197,6 +197,30 @@ module Rufus
     def purge_type! (type)
 
       FileUtils.rm_rf(dir_for(type))
+    end
+
+    # Returns a sorted list of all the ids for a given type of documents.
+    #
+    # Warning : trusts the ids to be identical to the filenames
+    #
+    def ids (type)
+
+      Dir[File.join(dir_for(type), '**', '*.json')].collect { |p|
+        File.basename(p, '.json')
+      }.sort
+    end
+
+    # Returns a sorted list of all the ids for a given type of documents.
+    #
+    # Actually reads each file and returns the real _id list
+    #
+    def real_ids (type)
+
+      Dir[File.join(dir_for(type), '**', '*.json')].inject([]) { |a, p|
+        doc = do_get(File.new(p))
+        a << doc['_id'] if doc
+        a
+      }.sort
     end
 
     protected

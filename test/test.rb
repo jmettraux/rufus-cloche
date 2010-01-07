@@ -188,15 +188,24 @@ class ClocheTest < Test::Unit::TestCase
 
   def test_purge_type
 
-    @c.put({ '_id' => 'thing.0', 'type' => 'unthing', 'color' => 'blue' })
-    @c.put({ '_id' => 'thing.1', 'type' => 'unthing', 'color' => 'blue' })
-    @c.put({ '_id' => 'thing.2', 'type' => 'unthing', 'color' => 'blue' })
+    load_people
 
-    assert_equal 3, @c.get_many('unthing').size
+    assert_equal 4, @c.get_many('person').size
 
-    @c.purge_type!('unthing')
+    @c.purge_type!('person')
 
-    assert_equal 0, @c.get_many('unthing').size
+    assert_equal 0, @c.get_many('person').size
+  end
+
+  def test_ids
+
+    load_people
+
+    assert_equal %w[ hiro jami john minehiko ], @c.ids('person')
+    assert_equal %w[ chicko-chan ], @c.ids('animal')
+
+    assert_equal %w[ hiro jami john minehiko ], @c.real_ids('person')
+    assert_equal %w[ chicko-chan ], @c.real_ids('animal')
   end
 
   protected

@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.13    not yet released
+
+- implemented Cloche#ids(type) and Cloche#real_ids(type)
+
+
 == rufus-cloche - 0.1.12    released 2010/01/06
 
 - implemented Cloche#purge_type!(t)
