@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 0.1.14    not yet released
+== rufus-cloche - 0.1.14    released 2010/02/13
 
 - made sure it works on windows (XP)
 
