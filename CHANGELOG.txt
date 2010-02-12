@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.14    not yet released
+
+- made sure it works on windows (XP)
+
+
 == rufus-cloche - 0.1.13    released 2010/01/07
 
 - implemented Cloche#ids(type) and Cloche#real_ids(type)

@@ -43,7 +43,9 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.13'
+    VERSION = '0.1.14'
+
+    WIN = RUBY_PLATFORM.index('mswin') != nil
 
     attr_reader :dir
 
@@ -134,9 +136,11 @@ module Rufus
         return cur if cur['_rev'] != drev
 
         begin
+          f.close
           File.delete(f.path)
           nil
-        rescue
+        rescue Exception => e
+          #p e
           false
         end
       end
@@ -217,7 +221,7 @@ module Rufus
     def real_ids (type)
 
       Dir[File.join(dir_for(type), '**', '*.json')].inject([]) { |a, p|
-        doc = do_get(File.new(p))
+        doc = do_get(p)
         a << doc['_id'] if doc
         a
       }.sort
@@ -232,7 +236,8 @@ module Rufus
 
     def do_get (file)
 
-      Rufus::Json.decode(file.read) rescue nil
+      s = file.is_a?(File) ? file.read : File.read(file)
+      Rufus::Json.decode(s) rescue nil
     end
 
     def dir_for (type)
@@ -266,17 +271,21 @@ module Rufus
 
           return false if file.nil?
 
-          file.flock(File::LOCK_EX)
+          file.flock(File::LOCK_EX) unless WIN
           block.call(file)
 
         ensure
           begin
-            file.flock(File::LOCK_UN)
+            file.flock(File::LOCK_UN) unless WIN
           rescue Exception => e
             #p [ :lock, @fpath, e ]
             #e.backtrace.each { |l| puts l }
           end
-          file.close rescue nil
+          begin
+            file.close if file
+          rescue Exception => e
+            #p [ :close_fail, e ]
+          end
         end
       end
     end

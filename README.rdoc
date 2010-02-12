@@ -11,6 +11,8 @@ The philosophy here is : every document has a revision number. You have to provi
 
 A cloche assumes your documents have a 'type' and it stores documents in separate dirs, one per type.
 
+WARNING : this library works on windows but without locking (only thread sync).
+
 
 == usage
 
