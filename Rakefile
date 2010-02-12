@@ -40,7 +40,7 @@ Strives to be process-safe and thread-safe.
 
   #gem.add_dependency 'yajl-ruby'
   #gem.add_dependency 'json'
-  gem.add_dependency 'rufus-json'
+  gem.add_dependency 'rufus-json', '>= 0.2.0'
   gem.add_development_dependency 'yard'
   gem.add_development_dependency 'jeweler'
 
