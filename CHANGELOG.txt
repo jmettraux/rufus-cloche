@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.15    released 2010/02/14
+
+- windows : mswin|mingw
+
+
 == rufus-cloche - 0.1.14    released 2010/02/13
 
 - made sure it works on windows (XP)
