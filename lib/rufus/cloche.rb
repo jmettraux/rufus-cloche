@@ -43,9 +43,9 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.14'
+    VERSION = '0.1.15'
 
-    WIN = RUBY_PLATFORM.index('mswin') != nil
+    WIN = RUBY_PLATFORM.match(/mswin|mingw/) != nil
 
     attr_reader :dir
 
