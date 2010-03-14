@@ -45,16 +45,28 @@ module Rufus
 
     VERSION = '0.1.16'
 
-    WIN = RUBY_PLATFORM.match(/mswin|mingw/) != nil
+    WIN = (RUBY_PLATFORM.match(/mswin|mingw/) != nil)
 
     attr_reader :dir
 
-    # Currently, the only known option is :dir
+    # Creates a new 'cloche'.
+    #
+    # There are 2 options :
+    #
+    # * :dir : to specify the directory into which the cloche data is store
+    # * :nolock : when set to true, no flock is used
+    #
+    # On the Windows platform, :nolock is set to true automatically.
+    #
+    # With JRuby 1.4.0, :nolock=true seems necessary on Ubuntu. While
+    # flock seems to work on MacOSX Snow Leopard.
     #
     def initialize (opts={})
 
       @dir = File.expand_path(opts[:dir] || 'cloche')
       @mutex = Mutex.new
+
+      @nolock = WIN || opts[:nolock]
     end
 
     # Puts a document (Hash) under the cloche.
@@ -271,12 +283,12 @@ module Rufus
 
           return false if file.nil?
 
-          file.flock(File::LOCK_EX) unless WIN
+          file.flock(File::LOCK_EX) unless @nolock
           block.call(file)
 
         ensure
           begin
-            file.flock(File::LOCK_UN) unless WIN
+            file.flock(File::LOCK_UN) unless @nolock
           rescue Exception => e
             #p [ :lock, @fpath, e ]
             #e.backtrace.each { |l| puts l }
