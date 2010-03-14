@@ -28,7 +28,8 @@ class ClocheTest < Test::Unit::TestCase
 
     FileUtils.rm_rf(@c_dir) rescue nil
 
-    @c = Rufus::Cloche.new(:dir => @c_dir)
+    @c = Rufus::Cloche.new(
+      :dir => @c_dir, :nolock => (RUBY_PLATFORM.match('java') != nil))
   end
   #def teardown
   #end
