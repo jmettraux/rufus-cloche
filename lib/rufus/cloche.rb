@@ -43,7 +43,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.16'
+    VERSION = '0.1.17'
 
     WIN = (RUBY_PLATFORM.match(/mswin|mingw/) != nil)
 
@@ -83,7 +83,7 @@ module Rufus
     def put (doc, opts={})
 
       doc = Rufus::Json.dup(doc) unless opts[:update_rev]
-        # work with a copy, don't touch orgiinal
+        # work with a copy, don't touch original
 
       type, key = doc['type'], doc['_id']
 
