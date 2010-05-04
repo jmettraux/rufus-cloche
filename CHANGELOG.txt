@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.17    not yet released
+
+- for ruote-beanstalk : put/get_many now accept strings or symbols as opts keys
+
+
 == rufus-cloche - 0.1.16    released 2010/03/14
 
 - :nolock option for JRuby 1.4.0 on Ubuntu

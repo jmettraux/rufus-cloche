@@ -82,7 +82,9 @@ module Rufus
     #
     def put (doc, opts={})
 
-      doc = Rufus::Json.dup(doc) unless opts[:update_rev]
+      opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
+
+      doc = Rufus::Json.dup(doc) unless opts['update_rev']
         # work with a copy, don't touch original
 
       type, key = doc['type'], doc['_id']
@@ -175,12 +177,14 @@ module Rufus
     #
     def get_many (type, key_match=nil, opts={})
 
+      opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
+
       d = dir_for(type)
 
       return [] unless File.exist?(d)
 
       docs = []
-      limit = opts[:limit]
+      limit = opts['limit']
 
       files = Dir[File.join(d, '**', '*.json')].sort { |p0, p1|
         File.basename(p0) <=> File.basename(p1)
