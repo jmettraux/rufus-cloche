@@ -174,6 +174,9 @@ module Rufus
     #
     # :skip and :limit are understood (pagination).
     #
+    # If :count => true, the query will simply return the number of documents
+    # that matched.
+    #
     def get_many (type, key_match=nil, opts={})
 
       opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
@@ -187,6 +190,7 @@ module Rufus
 
       limit = opts['limit']
       skip = opts['skip']
+      count = opts['count'] ? 0 : nil
 
       files = Dir[File.join(d, '**', '*.json')].sort { |p0, p1|
         File.basename(p0) <=> File.basename(p1)
@@ -202,7 +206,13 @@ module Rufus
           next if skip and skipped <= skip
 
           doc = get(type, key)
-          docs << doc if doc
+          next unless doc
+
+          if count
+            count = count + 1
+          else
+            docs << doc
+          end
 
           break if limit and docs.size >= limit
         end
@@ -214,7 +224,7 @@ module Rufus
       #docs.sort { |doc0, doc1| doc0['_id'] <=> doc1['_id'] }
         # let's trust filename order
 
-      docs
+      count ? count : docs
     end
 
     # Removes entirely documents of a given type.

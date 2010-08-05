@@ -210,6 +210,9 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal(
       %w[ john minehiko ],
       @c.get_many('person', nil, :skip => 2, :limit => 2).collect { |e| e['_id'] })
+
+    assert_equal(4, @c.get_many('person', nil, :count => true))
+    assert_equal(2, @c.get_many('person', /^j/, :count => true))
   end
 
   protected

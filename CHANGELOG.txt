@@ -4,6 +4,7 @@
 
 == rufus-cloche - 0.1.18    not yet released
 
+- get_many(type, regex, :count => true)
 - get_many(type, regex, :skip => 100, :limit => 25) (added :skip)
 
 
