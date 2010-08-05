@@ -172,7 +172,7 @@ module Rufus
     #
     # == opts
     #
-    # The only option know for now is :limit, which limits the number of
+    # The only option known for now is :limit, which limits the number of
     # documents returned.
     #
     def get_many (type, key_match=nil, opts={})
