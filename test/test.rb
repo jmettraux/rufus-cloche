@@ -169,15 +169,6 @@ class ClocheTest < Test::Unit::TestCase
       @c.get_many('person').collect { |e| e['_id'] })
   end
 
-  def test_get_many_limit
-
-    load_people
-
-    assert_equal(
-      %w[ hiro jami ],
-      @c.get_many('person', nil, :limit => 2).collect { |e| e['_id'] })
-  end
-
   def test_dot_id
 
     @c.put({ '_id' => 'something.0', 'type' => 'nothing', 'color' => 'blue' })
@@ -207,6 +198,18 @@ class ClocheTest < Test::Unit::TestCase
 
     assert_equal %w[ hiro jami john minehiko ], @c.real_ids('person')
     assert_equal %w[ chicko-chan ], @c.real_ids('animal')
+  end
+
+  def test_get_many_options
+
+    load_people
+
+    assert_equal(
+      %w[ hiro jami ],
+      @c.get_many('person', nil, :limit => 2).collect { |e| e['_id'] })
+    assert_equal(
+      %w[ john minehiko ],
+      @c.get_many('person', nil, :skip => 2, :limit => 2).collect { |e| e['_id'] })
   end
 
   protected

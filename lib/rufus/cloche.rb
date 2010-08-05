@@ -172,8 +172,7 @@ module Rufus
     #
     # == opts
     #
-    # The only option known for now is :limit, which limits the number of
-    # documents returned.
+    # :skip and :limit are understood (pagination).
     #
     def get_many (type, key_match=nil, opts={})
 
@@ -184,7 +183,10 @@ module Rufus
       return [] unless File.exist?(d)
 
       docs = []
+      skipped = 0
+
       limit = opts['limit']
+      skip = opts['skip']
 
       files = Dir[File.join(d, '**', '*.json')].sort { |p0, p1|
         File.basename(p0) <=> File.basename(p1)
@@ -194,12 +196,15 @@ module Rufus
 
         key = File.basename(fn, '.json')
 
-        if (not key_match) || key.match(key_match)
+        if (not key_match) or key.match(key_match)
+
+          skipped = skipped + 1
+          next if skip and skipped <= skip
 
           doc = get(type, key)
           docs << doc if doc
 
-          break if limit && (docs.size >= limit)
+          break if limit and docs.size >= limit
         end
       end
 

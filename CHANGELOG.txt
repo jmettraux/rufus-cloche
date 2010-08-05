@@ -4,6 +4,8 @@
 
 == rufus-cloche - 0.1.18    not yet released
 
+- get_many(type, regex, :skip => 100, :limit => 25) (added :skip)
+
 
 == rufus-cloche - 0.1.17    released 2010/05/04
 
