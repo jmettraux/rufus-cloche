@@ -200,6 +200,15 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal %w[ chicko-chan ], @c.real_ids('animal')
   end
 
+  def test_get_many_count
+
+    assert_equal(0, @c.get_many('person', nil, :count => true))
+
+    load_people
+
+    assert_equal(4, @c.get_many('person', nil, :count => true))
+  end
+
   def test_get_many_options
 
     load_people

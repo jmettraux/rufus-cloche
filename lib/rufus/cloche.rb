@@ -183,7 +183,7 @@ module Rufus
 
       d = dir_for(type)
 
-      return [] unless File.exist?(d)
+      return (opts['count'] ? 0 : []) unless File.exist?(d)
 
       docs = []
       skipped = 0
