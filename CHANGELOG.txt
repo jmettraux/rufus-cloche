@@ -2,6 +2,9 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.19    not yet released
+
+
 == rufus-cloche - 0.1.18    released 2010/08/05
 
 - get_many(type, regex, :count => true)
