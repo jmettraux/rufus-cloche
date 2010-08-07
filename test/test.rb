@@ -224,6 +224,21 @@ class ClocheTest < Test::Unit::TestCase
     assert_equal(2, @c.get_many('person', /^j/, :count => true))
   end
 
+  # it's not necessary to differentiate select_id and select_doc ...
+
+  def test_get_many_select
+
+    load_people
+
+    assert_equal(
+      %w[ jami john ],
+      @c.get_many(
+        'person', nil, :select => lambda { |id| id[0] == 'j' }
+      ).collect { |d|
+        d['_id']
+      })
+  end
+
   protected
 
   def load_people

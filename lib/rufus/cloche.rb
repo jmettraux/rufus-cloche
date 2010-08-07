@@ -200,7 +200,8 @@ module Rufus
 
         key = File.basename(fn, '.json')
 
-        if (not key_match) or key.match(key_match)
+        #if (not key_match) or key.match(key_match)
+        if matches?(key, key_match, opts)
 
           skipped = skipped + 1
           next if skip and skipped <= skip
@@ -259,6 +260,16 @@ module Rufus
     end
 
     protected
+
+    # Used by get_many, when checking the key of a doc (to determine if it
+    # belongs to the result set).
+    #
+    def matches? (key, regex, opts)
+
+      return key.match(regex) if regex
+      return true unless opts['select']
+      opts['select'].call(key)
+    end
 
     def self.neutralize (s)
 
