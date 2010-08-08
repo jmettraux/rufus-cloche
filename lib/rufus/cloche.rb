@@ -177,13 +177,15 @@ module Rufus
     # If :count => true, the query will simply return the number of documents
     # that matched.
     #
-    def get_many (type, key_match=nil, opts={})
+    def get_many (type, regex=nil, opts={})
 
       opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
 
       d = dir_for(type)
 
       return (opts['count'] ? 0 : []) unless File.exist?(d)
+
+      regexes = regex ? Array(regex) : nil
 
       docs = []
       skipped = 0
@@ -200,8 +202,7 @@ module Rufus
 
         key = File.basename(fn, '.json')
 
-        #if (not key_match) or key.match(key_match)
-        if matches?(key, key_match, opts)
+        if regexes.nil? or regexes.find { |regex| key.match(regex) }
 
           skipped = skipped + 1
           next if skip and skipped <= skip
@@ -260,16 +261,6 @@ module Rufus
     end
 
     protected
-
-    # Used by get_many, when checking the key of a doc (to determine if it
-    # belongs to the result set).
-    #
-    def matches? (key, regex, opts)
-
-      return key.match(regex) if regex
-      return true unless opts['select']
-      opts['select'].call(key)
-    end
 
     def self.neutralize (s)
 

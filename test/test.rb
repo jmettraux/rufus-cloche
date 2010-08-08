@@ -226,17 +226,13 @@ class ClocheTest < Test::Unit::TestCase
 
   # it's not necessary to differentiate select_id and select_doc ...
 
-  def test_get_many_select
+  def test_get_many_keys
 
     load_people
 
     assert_equal(
       %w[ jami john ],
-      @c.get_many(
-        'person', nil, :select => lambda { |id| id[0] == 'j' }
-      ).collect { |d|
-        d['_id']
-      })
+      @c.get_many('person', [ /jami/, /john/ ]).collect { |d| d['_id'] })
   end
 
   protected
