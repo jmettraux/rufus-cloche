@@ -158,6 +158,7 @@ class ClocheTest < Test::Unit::TestCase
     load_people
 
     assert_equal 2, @c.get_many('person', /^j/).size
+    assert_equal 2, @c.get_many('person', 'o').size
   end
 
   def test_get_many_key_order

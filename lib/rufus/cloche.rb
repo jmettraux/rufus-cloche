@@ -202,7 +202,7 @@ module Rufus
 
         key = File.basename(fn, '.json')
 
-        if regexes.nil? or regexes.find { |regex| key.match(regex) }
+        if regexes.nil? or match?(key, regexes)
 
           skipped = skipped + 1
           next if skip and skipped <= skip
@@ -261,6 +261,13 @@ module Rufus
     end
 
     protected
+
+    def match? (key, regexes)
+
+      regexes.first.is_a?(Regexp) ?
+        regexes.find { |regex| regex.match(key) } :
+        regexes.find { |s| key[-s.length..-1] == s }
+    end
 
     def self.neutralize (s)
 
