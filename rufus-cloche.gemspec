@@ -55,18 +55,15 @@ Strives to be process-safe and thread-safe.
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rufus-json>, [">= 0.2.5"])
       s.add_development_dependency(%q<rake>, [">= 0"])
-      s.add_development_dependency(%q<yard>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
       s.add_dependency(%q<rufus-json>, [">= 0.2.5"])
       s.add_dependency(%q<rake>, [">= 0"])
-      s.add_dependency(%q<yard>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
     s.add_dependency(%q<rufus-json>, [">= 0.2.5"])
     s.add_dependency(%q<rake>, [">= 0"])
-    s.add_dependency(%q<yard>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end

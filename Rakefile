@@ -42,7 +42,6 @@ Strives to be process-safe and thread-safe.
   #gem.add_dependency 'json'
   gem.add_dependency 'rufus-json', '>= 0.2.5'
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'yard'
   gem.add_development_dependency 'jeweler'
 
   # gemspec spec : http://www.rubygems.org/read/chapter/20
@@ -53,33 +52,27 @@ Jeweler::GemcutterTasks.new
 #
 # DOC
 
-begin
 
-  require 'yard'
-
-  YARD::Rake::YardocTask.new do |doc|
-    doc.options = [
-      '-o', 'html/rufus-cloche', '--title',
-      "rufus-cloche #{Rufus::Cloche::VERSION}"
-    ]
-  end
-
-rescue LoadError
-
-  task :yard do
-    abort "YARD is not available : sudo gem install yard"
-  end
+#
+# make sure to have rdoc 2.5.x to run that
+#
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rd|
+  rd.main = 'README.rdoc'
+  rd.rdoc_dir = 'rdoc/rufus-cloche'
+  rd.rdoc_files.include('README.rdoc', 'CHANGELOG.txt', 'lib/**/*.rb')
+  rd.title = "rufus-cloche #{Rufus::Cloche::VERSION}"
 end
 
 
 #
 # TO THE WEB
 
-task :upload_website => [ :clean, :yard ] do
+task :upload_rdoc => [ :clean, :rdoc ] do
 
   account = 'jmettraux@rubyforge.org'
   webdir = '/var/www/gforge-projects/rufus'
 
-  sh "rsync -azv -e ssh html/rufus-cloche #{account}:#{webdir}/"
+  sh "rsync -azv -e ssh rdoc/rufus-cloche #{account}:#{webdir}/"
 end
 
