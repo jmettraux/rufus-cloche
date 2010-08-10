@@ -4,6 +4,8 @@
 
 == rufus-cloche - 0.1.20    not yet released
 
+- get_many(type, regex, :descending => true)
+
 
 == rufus-cloche - 0.1.19    release 2010/08/08
 

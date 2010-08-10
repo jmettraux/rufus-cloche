@@ -198,6 +198,8 @@ module Rufus
         File.basename(p0) <=> File.basename(p1)
       }
 
+      files = files.reverse if opts['descending']
+
       files.each do |fn|
 
         key = File.basename(fn, '.json')
