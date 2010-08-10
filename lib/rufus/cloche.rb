@@ -43,7 +43,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.19'
+    VERSION = '0.1.20'
 
     WIN = (RUBY_PLATFORM.match(/mswin|mingw/) != nil)
 
