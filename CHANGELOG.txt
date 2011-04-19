@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.21    not yet released
+
+- removed the require 'json' / 'yajl' in the lib itself (Thanks Torsten)
+
+
 == rufus-cloche - 0.1.20    released 2010/08/10
 
 - get_many(type, regex, :descending => true)

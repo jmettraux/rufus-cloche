@@ -25,12 +25,7 @@
 require 'thread'
 require 'fileutils'
 
-begin
-  require 'yajl'
-rescue LoadError
-  require 'json'
-end
-require 'rufus/json'
+require 'rufus-json'
 Rufus::Json.detect_backend
 
 

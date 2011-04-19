@@ -12,5 +12,6 @@ John Mettraux  http://github.com/jmettraux
 
 == feedback
 
-gauched  http://github.com/gauched
+Torsten Schoenebaum - http://github.com/tosch
+gauched - http://github.com/gauched
 

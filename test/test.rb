@@ -7,6 +7,12 @@
 
 require 'rubygems'
 
+begin
+  require 'yajl'
+rescue
+  require 'json'
+end
+
 ROOT = File.join(File.dirname(__FILE__), '..')
 
 require 'test/unit'
