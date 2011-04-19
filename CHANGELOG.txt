@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 0.1.21    not yet released
+== rufus-cloche - 0.1.21    release 2011/04/19
 
 - removed the require 'json' / 'yajl' in the lib itself (Thanks Torsten)
 
