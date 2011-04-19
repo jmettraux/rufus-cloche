@@ -28,6 +28,8 @@ require 'fileutils'
 require 'rufus-json'
 Rufus::Json.detect_backend
 
+require 'rufus/cloche/version'
+
 
 module Rufus
 
@@ -37,8 +39,6 @@ module Rufus
   # Warning : cloches are process-safe but not thread-safe.
   #
   class Cloche
-
-    VERSION = '0.1.20'
 
     WIN = (RUBY_PLATFORM.match(/mswin|mingw/) != nil)
 

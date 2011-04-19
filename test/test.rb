@@ -16,7 +16,10 @@ end
 ROOT = File.join(File.dirname(__FILE__), '..')
 
 require 'test/unit'
-require File.join(ROOT, %w[ lib rufus cloche.rb ])
+
+$:.unshift(File.join(ROOT, 'lib'))
+
+require 'rufus/cloche'
 
 
 class ClocheTest < Test::Unit::TestCase

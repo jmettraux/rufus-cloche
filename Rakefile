@@ -1,78 +1,84 @@
 
 require 'rubygems'
+require 'rubygems/user_interaction' if Gem::RubyGemsVersion == '1.5.0'
+
 require 'rake'
-
-
-load 'lib/rufus/cloche.rb'
-
-
-#
-# CLEAN
-
 require 'rake/clean'
-CLEAN.include('pkg', 'tmp', 'html')
-task :default => [ :clean ]
+require 'rake/rdoctask'
 
 
 #
-# GEM
+# clean
 
-require 'jeweler'
+CLEAN.include('pkg', 'rdoc', 'cloche', 'bm_cloche', 'tcloche')
 
-Jeweler::Tasks.new do |gem|
 
-  gem.version = Rufus::Cloche::VERSION
-  gem.name = 'rufus-cloche'
-  gem.summary = 'a very stupid JSON hash store'
-  gem.description = %{
-A very stupid JSON hash store.
+#
+# test / spec
 
-It's built on top of yajl-ruby and File.lock. Defaults to 'json' (or 'json_pure') if yajl-ruby is not present (it's probably just a "gem install yajl-ruby" away.
+task :test do
 
-Strives to be process-safe and thread-safe.
-  }
-  gem.email = 'jmettraux@gmail.com'
-  gem.homepage = 'http://github.com/jmettraux/rufus-cloche/'
-  gem.authors = [ 'John Mettraux' ]
-  gem.rubyforge_project = 'rufus'
-
-  gem.test_file = 'test/test.rb'
-
-  #gem.add_dependency 'yajl-ruby'
-  #gem.add_dependency 'json'
-  gem.add_dependency 'rufus-json', '>= 0.2.5'
-  gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'jeweler'
-
-  # gemspec spec : http://www.rubygems.org/read/chapter/20
+  sh 'ruby -I. test/test.rb'
 end
-Jeweler::GemcutterTasks.new
+
+task :default => :test
 
 
 #
-# DOC
+# gem
+
+GEMSPEC_FILE = Dir['*.gemspec'].first
+GEMSPEC = eval(File.read(GEMSPEC_FILE))
+GEMSPEC.validate
 
 
+desc %{
+  builds the gem and places it in pkg/
+}
+task :build do
+
+  sh "gem build #{GEMSPEC_FILE}"
+  sh "mkdir pkg" rescue nil
+  sh "mv #{GEMSPEC.name}-#{GEMSPEC.version}.gem pkg/"
+end
+
+desc %{
+  builds the gem and pushes it to rubygems.org
+}
+task :push => :build do
+
+  sh "gem push pkg/#{GEMSPEC.name}-#{GEMSPEC.version}.gem"
+end
+
+
+#
+# rdoc
 #
 # make sure to have rdoc 2.5.x to run that
-#
-require 'rake/rdoctask'
+
 Rake::RDocTask.new do |rd|
+
   rd.main = 'README.rdoc'
-  rd.rdoc_dir = 'rdoc/rufus-cloche'
-  rd.rdoc_files.include('README.rdoc', 'CHANGELOG.txt', 'lib/**/*.rb')
-  rd.title = "rufus-cloche #{Rufus::Cloche::VERSION}"
+  rd.rdoc_dir = "rdoc/#{GEMSPEC.name}"
+
+  rd.rdoc_files.include(
+    'README.rdoc', 'CHANGELOG.txt', 'CREDITS.txt', 'lib/**/*.rb')
+
+  rd.title = "#{GEMSPEC.name} #{GEMSPEC.version}"
 end
 
 
 #
-# TO THE WEB
+# upload_rdoc
 
+desc %{
+  upload the rdoc to rubyforge
+}
 task :upload_rdoc => [ :clean, :rdoc ] do
 
   account = 'jmettraux@rubyforge.org'
   webdir = '/var/www/gforge-projects/rufus'
 
-  sh "rsync -azv -e ssh rdoc/rufus-cloche #{account}:#{webdir}/"
+  sh "rsync -azv -e ssh rdoc/#{GEMSPEC.name} #{account}:#{webdir}/"
 end
 
