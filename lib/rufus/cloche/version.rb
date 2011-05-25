@@ -30,7 +30,7 @@ module Rufus
   #
   class Cloche
 
-    VERSION = '0.1.22'
+    VERSION = '1.0.0'
   end
 end
 

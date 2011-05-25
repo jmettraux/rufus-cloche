@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 0.1.22    not yet released
+== rufus-cloche - 1.0.0    not yet released
 
 - fix for flock and JRuby (Thanks Mario Camou)
   http://jira.codehaus.org/browse/JRUBY-5627
