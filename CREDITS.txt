@@ -7,7 +7,12 @@ many thanks to Brian Lopez for yajl-ruby
 
 == authors
 
-John Mettraux  http://github.com/jmettraux
+John Mettraux - http://github.com/jmettraux
+
+
+== contributors
+
+Mario Camou -  JRuby flock fix
 
 
 == feedback

@@ -1,6 +1,7 @@
 # encoding: utf-8
 
-load 'lib/rufus/cloche/version.rb'
+require File.join(File.dirname(__FILE__), 'lib/rufus/cloche/version')
+  # bundler wants absolute path
 
 
 Gem::Specification.new do |s|

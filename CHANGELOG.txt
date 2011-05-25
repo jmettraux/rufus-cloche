@@ -2,6 +2,12 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 0.1.22    not yet released
+
+- fix for flock and JRuby (Thanks Mario Camou)
+  http://jira.codehaus.org/browse/JRUBY-5627
+
+
 == rufus-cloche - 0.1.21    release 2011/04/19
 
 - removed the require 'json' / 'yajl' in the lib itself (Thanks Torsten)

@@ -53,9 +53,6 @@ module Rufus
     #
     # On the Windows platform, :nolock is set to true automatically.
     #
-    # With JRuby 1.4.0, :nolock=true seems necessary on Ubuntu. While
-    # flock seems to work on MacOSX Snow Leopard.
-    #
     def initialize (opts={})
 
       @dir = File.expand_path(opts[:dir] || 'cloche')
@@ -304,7 +301,7 @@ module Rufus
             FileUtils.touch(fn) unless File.exist?(fn)
           end
 
-          file = File.new(fn) rescue nil
+          file = File.new(fn, 'r+') rescue nil
 
           return false if file.nil?
 
