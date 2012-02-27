@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 1.0.2    released 2012/02/27
+
+- only making sure the .gemspec doesn't require any file
+
+
 == rufus-cloche - 1.0.1    released 2011/05/25
 
 - fix for flock and JRuby (Thanks Mario Camou)
