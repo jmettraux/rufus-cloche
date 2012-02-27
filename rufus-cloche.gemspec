@@ -1,13 +1,12 @@
-# encoding: utf-8
-
-require File.join(File.dirname(__FILE__), 'lib/rufus/cloche/version')
-  # bundler wants absolute path
-
 
 Gem::Specification.new do |s|
 
   s.name = 'rufus-cloche'
-  s.version = Rufus::Cloche::VERSION
+
+  s.version = File.read(
+    File.expand_path('../lib/rufus/cloche/version.rb', __FILE__)
+  ).match(/ VERSION *= *['"]([^'"]+)/)[1]
+
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'John Mettraux' ]
   s.email = [ 'jmettraux@gmail.com' ]
