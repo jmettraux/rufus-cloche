@@ -53,7 +53,7 @@ module Rufus
     #
     # On the Windows platform, :nolock is set to true automatically.
     #
-    def initialize (opts={})
+    def initialize(opts={})
 
       @dir = File.expand_path(opts[:dir] || 'cloche')
       @mutex = Mutex.new
@@ -72,7 +72,7 @@ module Rufus
     #
     # If the put is successful, nil is returned.
     #
-    def put (doc, opts={})
+    def put(doc, opts={})
 
       opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
 
@@ -108,7 +108,7 @@ module Rufus
 
     # Gets a document (or nil if not found (or corrupted)).
     #
-    def get (type, key)
+    def get(type, key)
 
       r = lock(false, type, key) { |f| do_get(f) }
 
@@ -126,7 +126,7 @@ module Rufus
     #
     # Returns true if the deletion failed.
     #
-    def delete (doc)
+    def delete(doc)
 
       drev = doc['_rev']
 
@@ -169,7 +169,7 @@ module Rufus
     # If :count => true, the query will simply return the number of documents
     # that matched.
     #
-    def get_many (type, regex=nil, opts={})
+    def get_many(type, regex=nil, opts={})
 
       opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
 
@@ -225,7 +225,7 @@ module Rufus
 
     # Removes entirely documents of a given type.
     #
-    def purge_type! (type)
+    def purge_type!(type)
 
       FileUtils.rm_rf(dir_for(type))
     end
@@ -234,7 +234,7 @@ module Rufus
     #
     # Warning : trusts the ids to be identical to the filenames
     #
-    def ids (type)
+    def ids(type)
 
       Dir[File.join(dir_for(type), '**', '*.json')].collect { |p|
         File.basename(p, '.json')
@@ -245,7 +245,7 @@ module Rufus
     #
     # Actually reads each file and returns the real _id list
     #
-    def real_ids (type)
+    def real_ids(type)
 
       Dir[File.join(dir_for(type), '**', '*.json')].inject([]) { |a, p|
         doc = do_get(p)
@@ -256,30 +256,30 @@ module Rufus
 
     protected
 
-    def match? (key, regexes)
+    def match?(key, regexes)
 
       regexes.first.is_a?(Regexp) ?
         regexes.find { |regex| regex.match(key) } :
         regexes.find { |s| key[-s.length..-1] == s }
     end
 
-    def self.neutralize (s)
+    def self.neutralize(s)
 
       s.to_s.strip.gsub(/[ \/:;\*\\\+\?]/, '_')
     end
 
-    def do_get (file)
+    def do_get(file)
 
       s = file.is_a?(File) ? file.read : File.read(file)
       Rufus::Json.decode(s) rescue nil
     end
 
-    def dir_for (type)
+    def dir_for(type)
 
       File.join(@dir, Cloche.neutralize(type || 'no_type'))
     end
 
-    def path_for (type, key)
+    def path_for(type, key)
 
       nkey = Cloche.neutralize(key)
 
@@ -288,7 +288,7 @@ module Rufus
       [ File.join(dir_for(type), subdir), "#{nkey}.json" ]
     end
 
-    def lock (create, type, key, &block)
+    def lock(create, type, key, &block)
 
       @mutex.synchronize do
         begin

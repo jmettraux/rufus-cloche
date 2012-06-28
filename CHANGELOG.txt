@@ -4,6 +4,8 @@
 
 == rufus-cloche - 1.0.3    not yet released
 
+- standardish (no space before "(" in method signature)
+
 
 == rufus-cloche - 1.0.2    released 2012/02/27
 
