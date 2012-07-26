@@ -1,6 +1,8 @@
 
-require 'rubygems'
-require 'lib/rufus/cloche'
+$:.unshift(File.expand_path('../../lib', __FILE__))
+
+require 'rufus-json/automatic'
+require 'rufus-cloche'
 
 CLO = Rufus::Cloche.new(:dir => 'cloche')
 

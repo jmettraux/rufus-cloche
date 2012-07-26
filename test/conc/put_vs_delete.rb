@@ -1,7 +1,8 @@
 
 $:.unshift('lib')
 
-require 'rufus/cloche'
+require 'rufus-json/automatic'
+require 'rufus-cloche'
 
 workdir = File.join(File.dirname(__FILE__), '..', '..', 'tcloche')
 

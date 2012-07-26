@@ -7,19 +7,13 @@
 
 require 'rubygems'
 
-begin
-  require 'yajl'
-rescue
-  require 'json'
-end
+require 'test/unit'
+require 'rufus-json/automatic'
 
 ROOT = File.join(File.dirname(__FILE__), '..')
-
-require 'test/unit'
-
 $:.unshift(File.join(ROOT, 'lib'))
 
-require 'rufus/cloche'
+require 'rufus-cloche'
 
 
 class ClocheTest < Test::Unit::TestCase

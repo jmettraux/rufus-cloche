@@ -1,8 +1,14 @@
 
-require 'rubygems'
-require 'lib/rufus/cloche'
+$:.unshift(File.expand_path('../../lib', __FILE__))
+
+require 'rufus-json/automatic'
+require 'rufus-cloche'
 
 CLO = Rufus::Cloche.new(:dir => 'cloche')
+if doc = CLO.get('person', 'john')
+  CLO.delete(doc)
+end
+CLO.put('type' => 'person', '_id' => 'john')
 
 p $$
 
