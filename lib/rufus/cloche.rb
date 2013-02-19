@@ -91,17 +91,18 @@ module Rufus
         ArgumentError.new("values for '_rev' must be positive integers")
       ) if rev.class != Fixnum && rev.class != Bignum
 
-      r = lock(rev == -1, type, key) do |file|
+      r =
+        lock(rev == -1, type, key) do |file|
 
-        cur = do_get(file)
+          cur = do_get(file)
 
-        return cur if cur && cur['_rev'] != doc['_rev']
-        return true if cur.nil? && doc['_rev'] != -1
+          return cur if cur && cur['_rev'] != doc['_rev']
+          return true if cur.nil? && doc['_rev'] != -1
 
-        doc['_rev'] += 1
+          doc['_rev'] += 1
 
-        File.open(file.path, 'wb') { |io| io.write(Rufus::Json.encode(doc)) }
-      end
+          File.open(file.path, 'wb') { |io| io.write(Rufus::Json.encode(doc)) }
+        end
 
       r == false ? true : nil
     end
@@ -134,22 +135,23 @@ module Rufus
 
       type, key = doc['type'], doc['_id']
 
-      r = lock(false, type, key) do |f|
+      r =
+        lock(false, type, key) do |f|
 
-        cur = do_get(f)
+          cur = do_get(f)
 
-        return nil unless cur
-        return cur if cur['_rev'] != drev
+          return nil unless cur
+          return cur if cur['_rev'] != drev
 
-        begin
-          f.close
-          File.delete(f.path)
-          nil
-        rescue Exception => e
-          #p e
-          false
+          begin
+            f.close
+            File.delete(f.path)
+            nil
+          rescue Exception => e
+            #p e
+            false
+          end
         end
-      end
 
       r == false ? true : nil
     end
@@ -186,10 +188,7 @@ module Rufus
       skip = opts['skip']
       count = opts['count'] ? 0 : nil
 
-      files = Dir[File.join(d, '**', '*.json')].sort { |p0, p1|
-        File.basename(p0) <=> File.basename(p1)
-      }
-
+      files = Dir[File.join(d, '**', '*.json')].sort_by { |f| File.basename(f) }
       files = files.reverse if opts['descending']
 
       files.each do |fn|
@@ -236,8 +235,8 @@ module Rufus
     #
     def ids(type)
 
-      Dir[File.join(dir_for(type), '**', '*.json')].collect { |p|
-        File.basename(p, '.json')
+      Dir[File.join(dir_for(type), '**', '*.json')].collect { |path|
+        File.basename(path, '.json')
       }.sort
     end
 
