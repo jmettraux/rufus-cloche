@@ -91,19 +91,19 @@ module Rufus
         ArgumentError.new("values for '_rev' must be positive integers")
       ) if rev.class != Fixnum && rev.class != Bignum
 
-      lock(true, type, key) do |file|
+      r = lock(rev == -1, type, key) do |file|
 
         cur = do_get(file)
 
         return cur if cur && cur['_rev'] != doc['_rev']
         return true if cur.nil? && doc['_rev'] != -1
 
-        doc['_rev'] = doc['_rev'] + 1
+        doc['_rev'] += 1
 
         File.open(file.path, 'wb') { |io| io.write(Rufus::Json.encode(doc)) }
       end
 
-      nil
+      r == false ? true : nil
     end
 
     # Gets a document (or nil if not found (or corrupted)).
@@ -306,6 +306,10 @@ module Rufus
           return false if file.nil?
 
           file.flock(File::LOCK_EX) unless @nolock
+
+          return false if ( ! create) && ( ! File.exist?(fn))
+            # we got the lock, but is the file still here?
+
           block.call(file)
 
         ensure
