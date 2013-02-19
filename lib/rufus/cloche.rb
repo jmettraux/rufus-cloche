@@ -25,8 +25,8 @@
 require 'thread'
 require 'fileutils'
 
-require 'rufus-json'
-Rufus::Json.detect_backend
+#require 'rufus-json/automatic'
+  # best left to the code using rufus-cloche, not to rufus-cloche itself
 
 require 'rufus/cloche/version'
 

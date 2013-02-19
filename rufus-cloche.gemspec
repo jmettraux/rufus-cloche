@@ -31,7 +31,7 @@ Strives to be process-safe and thread-safe.
     '*.gemspec', '*.txt', '*.rdoc', '*.md'
   ]
 
-  s.add_runtime_dependency 'rufus-json', '>= 1.0.1'
+  s.add_runtime_dependency 'rufus-json', '>= 1.0.3'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'json'
