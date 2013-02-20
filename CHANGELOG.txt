@@ -2,7 +2,7 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 1.0.3    not yet released
+== rufus-cloche - 1.0.3    released 2013/02/21
 
 - fix issue when putting a just deleted doc
 - standardish (no space before "(" in method signature)
