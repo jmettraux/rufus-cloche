@@ -295,10 +295,8 @@ module Rufus
           d, f = path_for(type, key)
           fn = File.join(d, f)
 
-          if create && ( ! File.exist?(fn))
-            FileUtils.mkdir_p(d) unless File.exist?(d)
-            FileUtils.touch(fn) unless File.exist?(fn)
-          end
+          FileUtils.mkdir_p(d) if create && ( ! File.exist?(d))
+          FileUtils.touch(fn) if create && ( ! File.exist?(fn))
 
           file = File.new(fn, 'r+') rescue nil
 
