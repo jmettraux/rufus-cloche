@@ -2,6 +2,11 @@
 = rufus-cloche CHANGELOG.txt
 
 
+== rufus-cloche - 1.0.4    not yet released
+
+- reinforce "gone detection again"
+
+
 == rufus-cloche - 1.0.3    released 2013/02/21
 
 - fix issue when putting a just deleted doc

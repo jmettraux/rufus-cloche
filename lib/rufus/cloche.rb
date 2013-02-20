@@ -304,7 +304,10 @@ module Rufus
 
           file.flock(File::LOCK_EX) unless @nolock
 
-          7.times { return false unless File.exist?(fn) } unless create
+          unless create
+            Thread.pass
+            21.times { return false unless File.exist?(fn) }
+          end
             #
             # We got the lock, but is the file still here?
             #
