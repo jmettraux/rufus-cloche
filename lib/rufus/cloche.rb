@@ -304,8 +304,13 @@ module Rufus
 
           file.flock(File::LOCK_EX) unless @nolock
 
-          return false if ( ! create) && ( ! File.exist?(fn))
-            # we got the lock, but is the file still here?
+          7.times { return false unless File.exist?(fn) } unless create
+            #
+            # We got the lock, but is the file still here?
+            #
+            # Asking more than one time, since, at least on OSX snoleo,
+            # File.exist? might say yes for a file just deleted
+            # (by another process)
 
           block.call(file)
 
