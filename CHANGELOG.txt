@@ -2,8 +2,9 @@
 = rufus-cloche CHANGELOG.txt
 
 
-== rufus-cloche - 1.0.4    not yet released
+== rufus-cloche - 1.0.4    released 2013/02/21
 
+- don't probe existence for :read and :delete locks
 - reinforce "gone detection again"
 
 
