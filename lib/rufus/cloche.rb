@@ -92,7 +92,7 @@ module Rufus
       ) if rev.class != Fixnum && rev.class != Bignum
 
       r =
-        lock(rev == -1, type, key) do |file|
+        lock(rev == -1 ? :create : :write, type, key) do |file|
 
           cur = do_get(file)
 
@@ -111,7 +111,7 @@ module Rufus
     #
     def get(type, key)
 
-      r = lock(false, type, key) { |f| do_get(f) }
+      r = lock(:read, type, key) { |f| do_get(f) }
 
       r == false ? nil : r
     end
@@ -136,7 +136,7 @@ module Rufus
       type, key = doc['type'], doc['_id']
 
       r =
-        lock(false, type, key) do |f|
+        lock(:delete, type, key) do |f|
 
           cur = do_get(f)
 
@@ -287,7 +287,7 @@ module Rufus
       [ File.join(dir_for(type), subdir), "#{nkey}.json" ]
     end
 
-    def lock(create, type, key, &block)
+    def lock(ltype, type, key, &block)
 
       @mutex.synchronize do
         begin
@@ -295,8 +295,8 @@ module Rufus
           d, f = path_for(type, key)
           fn = File.join(d, f)
 
-          FileUtils.mkdir_p(d) if create && ( ! File.exist?(d))
-          FileUtils.touch(fn) if create && ( ! File.exist?(fn))
+          FileUtils.mkdir_p(d) if ltype == :create && ( ! File.exist?(d))
+          FileUtils.touch(fn) if ltype == :create && ( ! File.exist?(fn))
 
           file = File.new(fn, 'r+') rescue nil
 
@@ -304,7 +304,7 @@ module Rufus
 
           file.flock(File::LOCK_EX) unless @nolock
 
-          unless create
+          if ltype == :write
             Thread.pass
             21.times { return false unless File.exist?(fn) }
           end
