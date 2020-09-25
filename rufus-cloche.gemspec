@@ -10,9 +10,8 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'John Mettraux' ]
   s.email = [ 'jmettraux@gmail.com' ]
-  s.homepage = 'http://ruote.rubyforge.org'
-  s.rubyforge_project = 'rufus'
-  s.summary = 'an open source Ruby workflow engine'
+  s.homepage = 'https://github.com/jmettraux/rufus-cloche'
+  s.summary = 'A very stupid JSON hash store'
   s.description = %{
 A very stupid JSON hash store.
   }
